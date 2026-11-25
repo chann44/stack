@@ -1,41 +1,72 @@
-#![allow(dead_code)]
+#[allow(dead_code)]
 
 struct Stack {
-    cap: u32,
-    collection: Vec<u32>,
-    size: u32,
+    cap: usize,
+    collection: Vec<i32>,
+    size: usize,
 }
 
 
 impl Stack {
     
-    fn new(cap: u32) -> Self {
+    pub fn new(cap: usize) -> Self {
        Self {
-        size: 0;
+        size: 0,
+        cap: cap,
+        collection: vec![0; cap],
+
        }
     } 
 
-    fn push(&self, item:u32) -> bool {
-        return true 
+    pub fn push(&mut self, item:i32) -> bool {
+        if self.is_full() {
+            return false;
+        }
+
+        self.collection[self.size] = item;
+        self.size +=1;
+        return true;
     }    
 
-    fn pop(&self) -> u32 {
-
-        return 0
+    pub fn peek(&self) -> Option<i32> {
+        if self.is_empty() {
+            return None;
+        }
+        return Some(self.collection[self.size-1])
     }
 
-    fn is_full(&self) -> bool {
-
-        return true 
+    pub fn pop(&mut self) -> Option<i32> {
+        if self.is_empty() {
+            return None;
+        }
+        self.size -=1;
+        return Some(self.collection[self.size])
     }
 
-    fn is_empty(&self) -> bool {
-        return true 
+    pub fn is_full(&self) -> bool {
+        return self.size == self.cap
+    }
+
+    pub fn is_empty(&self) -> bool {
+        return self.size == 0
     }
 
 }
 
 
 fn main() {
-    println!("hello world "); 
+    let mut stack = Stack::new(5);
+
+    stack.push(10);
+    stack.push(20);
+    stack.push(30);
+
+    println!("{:?}", stack.peek()); 
+    println!("{:?}", stack.pop());  
+    println!("{:?}", stack.pop());  
+
+    println!("{}", stack.is_empty()); 
+    println!("{}", stack.is_full());  
+
+    drop(stack);
 }

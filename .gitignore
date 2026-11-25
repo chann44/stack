@@ -1,2 +1,2 @@
-out
-stack
+./c/out
+./rust/stack
